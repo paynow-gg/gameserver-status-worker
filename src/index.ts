@@ -1,18 +1,15 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.jsonc`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import { Context, Hono } from 'hono';
+import { handleGetMinecraftServerStatus } from './routes';
 
-export default {
-	async fetch(request, env, ctx): Promise<Response> {
-		return new Response('Hello World!');
-	},
-} satisfies ExportedHandler<Env>;
+const app = new Hono();
+
+app.get('/', (c: Context) => {
+	const version = c.env.CF_VERSION_METADATA;
+	return c.text(`PayNow Gameserver Status Worker - build ${version.tag || version.id} (${version.timestamp || 'build time unknown'})`);
+});
+app.get('/minecraft/:address', (c: Context) => handleGetMinecraftServerStatus(c, c.req.param('address')));
+app.get('/a2s', (c: Context) => {
+	return c.text('todo');
+});
+
+export default app;
