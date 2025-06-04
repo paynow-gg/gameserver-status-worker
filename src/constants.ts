@@ -1,4 +1,4 @@
-export const WORKER_CACHE_HOSTNAME = 'https://srvstat.paynow.gg';
+export const WORKER_CACHE_HOSTNAME = 'https://srvstatus.paynow.gg';
 export const MINECRAFT_CACHE_TTL = 60;
 
 export const MINECRAFT_IP_ADDRESS_REGEX = new RegExp(
